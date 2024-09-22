@@ -1,5 +1,5 @@
 from time import time
-from typing import Any
+from typing import Any, Union, Dict, List, Optional, Tuple
 
 import aiohttp
 
@@ -12,7 +12,7 @@ async def get_upgrades(
     response_json = await make_request(
         http_client,
         'POST',
-        'https://api.hamsterkombatgame.io/clicker/upgrades-for-buy',
+        'https://api.hamsterkombatgame.io/interlude/upgrades-for-buy',
         {},
         'getting Upgrades',
     )
@@ -22,11 +22,11 @@ async def get_upgrades(
 
 async def buy_upgrade(
         http_client: aiohttp.ClientSession, upgrade_id: str
-) -> tuple[bool, Any] | tuple[bool, None]:
+) -> Union[Tuple[bool, Any], Tuple[bool, None]]:
     response_json = await make_request(
         http_client,
         'POST',
-        'https://api.hamsterkombatgame.io/clicker/buy-upgrade',
+        'https://api.hamsterkombatgame.io/interlude/buy-upgrade',
         {'timestamp': int(time()), 'upgradeId': upgrade_id},
         'buying Upgrade',
         ignore_status=422,

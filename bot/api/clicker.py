@@ -1,5 +1,5 @@
 from time import time
-from typing import Any
+from typing import Any, Union, Dict, List, Optional, Tuple
 
 import aiohttp
 
@@ -8,25 +8,26 @@ from bot.api.http import make_request
 
 async def get_version_config(
         http_client: aiohttp.ClientSession, config_version: str
-) -> dict[Any, Any] | Any:
+) -> Union[Dict[Any, Any], Any]:
     response_json = await make_request(
         http_client,
         'GET',
-        f'https://api.hamsterkombatgame.io/clicker/config/{config_version}',
+        f'https://api.hamsterkombatgame.io/interlude/config/{config_version}',
         {},
         'getting Version Config',
     )
+    version_config = response_json.get('config')
 
-    return response_json
+    return version_config
 
 
 async def get_game_config(
         http_client: aiohttp.ClientSession,
-) -> dict[Any, Any] | Any:
+) -> Union[Dict[Any, Any], Any]:
     response_json = await make_request(
         http_client,
         'POST',
-        'https://api.hamsterkombatgame.io/clicker/config',
+        'https://api.hamsterkombatgame.io/interlude/config',
         {},
         'getting Game Config',
     )
@@ -34,20 +35,21 @@ async def get_game_config(
     return response_json
 
 
-async def get_profile_data(http_client: aiohttp.ClientSession) -> dict[str]:
-    while True:
-        response_json = await make_request(
-            http_client,
-            'POST',
-            'https://api.hamsterkombatgame.io/clicker/sync',
-            {},
-            'getting Profile Data',
-            ignore_status=422,
-        )
+async def get_profile_data(
+        http_client: aiohttp.ClientSession
+) -> Dict[str, Any]:
+    response_json = await make_request(
+        http_client,
+        'POST',
+        'https://api.hamsterkombatgame.io/interlude/sync',
+        {},
+        'getting Profile Data',
+        ignore_status=422,
+    )
 
-        profile_data = response_json.get('clickerUser') or response_json.get('found', {}).get('clickerUser', {})
+    profile_data = response_json.get('interludeUser') or response_json.get('found', {}).get('interludeUser', {})
 
-        return profile_data
+    return profile_data
 
 
 async def get_ip_info(
@@ -82,7 +84,7 @@ async def get_skins(
     response_json = await make_request(
         http_client,
         'POST',
-        'https://api.hamsterkombatgame.io/clicker/get-skin',
+        'https://api.hamsterkombatgame.io/interlude/get-skin',
         {},
         'getting Skins',
     )
@@ -91,11 +93,11 @@ async def get_skins(
 
 async def send_taps(
         http_client: aiohttp.ClientSession, available_energy: int, taps: int
-) -> dict[Any, Any] | Any:
+) -> Union[Dict[Any, Any], Any]:
     response_json = await make_request(
         http_client,
         'POST',
-        'https://api.hamsterkombatgame.io/clicker/tap',
+        'https://api.hamsterkombatgame.io/interlude/tap',
         {
             'availableTaps': available_energy,
             'count': taps,
@@ -105,6 +107,6 @@ async def send_taps(
         ignore_status=422,
     )
 
-    profile_data = response_json.get('clickerUser') or response_json.get('found', {}).get('clickerUser', {})
+    profile_data = response_json.get('interludeUser') or response_json.get('found', {}).get('interludeUser', {})
 
     return profile_data
