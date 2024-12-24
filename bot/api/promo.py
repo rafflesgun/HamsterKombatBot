@@ -12,7 +12,7 @@ async def get_apps_info(
     response_json = await make_request(
         http_client,
         'GET',
-        'https://api21.datavibe.top/api/Games',
+        'https://api.arcanum.net.ru/api/Games',
         {},
         'getting Apps Info'
     )

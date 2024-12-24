@@ -1,5 +1,5 @@
 #Build: docker buildx build --platform linux/amd64,linux/arm64 --push -t rafflesg/hamsterkombatbot-1:latest .
-FROM python:3.11.9-slim as builder
+FROM python:3.11.9-slim AS builder
 LABEL org.opencontainers.image.source=https://github.com/shamhi/HamsterKombatBot
 WORKDIR /app
 

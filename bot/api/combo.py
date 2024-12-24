@@ -7,7 +7,7 @@ async def get_combo_cards(http_client: aiohttp.ClientSession) -> dict:
     return await make_request(
         http_client,
         'POST',
-        'https://api21.datavibe.top/api/GetCombo',
+        'https://api.arcanum.net.ru/api/GetCombo',
         {},
         'getting Combo Cards',
     )
